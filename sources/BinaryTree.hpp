@@ -41,9 +41,17 @@ namespace ariel
             return *this;
         }
 
-        BinaryTree &add_left(T, T) { return *this; }
+        BinaryTree &add_left(T p, T v)
+        {
+            root = new Node{v, nullptr};
+            return *this;
+        }
 
-        BinaryTree &add_right(T, T) { return *this; }
+        BinaryTree &add_right(T p, T v)
+        {
+            root = new Node{v, nullptr};
+            return *this;
+        }
 
         void printBT(const string &prefix, const Node *node, bool isLeft) const
         {
@@ -84,7 +92,7 @@ namespace ariel
             Node *current_node;
 
         public:
-            iteratorTree(Node *ptr = nullptr) : current_node(ptr) { }
+            iteratorTree(Node *ptr = nullptr) : current_node(ptr) {}
 
             const T &operator*() const
             {
