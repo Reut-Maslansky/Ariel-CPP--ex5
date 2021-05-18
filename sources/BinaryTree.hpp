@@ -34,16 +34,45 @@ namespace ariel
         {
             delete root;
         }
-        
-        BinaryTree &add_root(T) { return *this; }
-        
+
+        BinaryTree &add_root(T t)
+        {
+            root = new Node{t, nullptr};
+            return *this;
+        }
+
         BinaryTree &add_left(T, T) { return *this; }
-        
+
         BinaryTree &add_right(T, T) { return *this; }
+
+        void printBT(const string &prefix, const Node *node, bool isLeft) const
+        {
+            if (node != nullptr)
+            {
+                std::cout << prefix;
+
+                std::cout << (isLeft ? "├──" : "└──");
+
+                // print the value of the node
+                cout << node->value << endl;
+
+                // enter the next tree level - left and right branch
+                printBT(prefix + (isLeft ? "│   " : "    "), node->left, true);
+                printBT(prefix + (isLeft ? "│   " : "    "), node->right, false);
+            }
+        }
+
+        void printBT(const Node *node) const
+        {
+            printBT("", node, false);
+        }
 
         friend ostream &operator<<(ostream &os, const BinaryTree &b)
         {
-            return os << "Binary Tree"<< endl;
+
+            os << "Binary Tree" << endl;
+            b.printBT(b.root);
+            return os;
         }
 
         /***************CLASS ITERATOR***************/
@@ -55,9 +84,12 @@ namespace ariel
             Node *current_node;
 
         public:
-            iteratorTree(Node *ptr = nullptr) : current_node(ptr){}
+            iteratorTree(Node *ptr = nullptr) : current_node(ptr) { }
 
-            const T &operator*() const { return current_node->value; }
+            const T &operator*() const
+            {
+                return current_node->value;
+            }
 
             const T *operator->() const { return &(current_node->value); }
 
@@ -65,7 +97,6 @@ namespace ariel
             iteratorTree &operator++()
             {
                 //++pointer_to_current_node;
-                cout << "here" << endl;
                 if (current_node->right)
                     current_node = current_node->right;
                 else
