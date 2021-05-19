@@ -221,8 +221,10 @@ namespace ariel
         friend ostream &operator<<(ostream &os, const BinaryTree &b)
         {
 
-            os << "Binary Tree" << endl;
+            os << "\033[35m"
+               << "\nBinary Tree:\n" << endl;
             b.printBT(b.root);
+            os << "\033[0m";
             return os;
         }
 
