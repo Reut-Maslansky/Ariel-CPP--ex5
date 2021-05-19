@@ -53,7 +53,7 @@ namespace ariel
             {
                 if (current_node == nullptr)
                 {
-                    return;
+                    throw invalid_argument("can't create an iterator on a empty tree");
                 }
                 stack<Node *> s;
                 Node *curr = current_node;
@@ -74,19 +74,19 @@ namespace ariel
                 }
 
                 it.push(nullptr);
-                current_node=it.front();
+                current_node = it.front();
                 it.pop();
             }
             void init_queue_preorder()
             {
                 if (current_node == nullptr)
                 {
-                    return;
+                    throw invalid_argument("can't create an iterator on a empty tree");
                 }
                 stack<Node *> s;
                 s.push(current_node);
 
-                while (s.empty() == false)
+                while (!s.empty())
                 {
                     Node *node = s.top();
                     it.push(node);
@@ -99,48 +99,43 @@ namespace ariel
                 }
 
                 it.push(nullptr);
-                current_node=it.front();
+                current_node = it.front();
                 it.pop();
             }
             void init_queue_postorder()
             {
-                // if (current_node == nullptr)
-                // {
-                //     return;
-                // }
-                // stack<Node *> s;
-                // Node *node = current_node;
+                if (current_node == nullptr)
+                {
+                    throw invalid_argument("can't create an iterator on a empty tree");
+                }
 
-                // do
-                // {
-                //     while (node)
-                //     {
-                //         if (node->right)
-                //         {
-                //             s.push(node->right);
-                //         }
-                //         s.push(node);
+                stack<Node *> s1, s2;
 
-                //         node = node->left;
-                //     }
+                s1.push(current_node);
+                Node *node;
 
-                //     node = s.top();
-                //     s.pop();
+                while (!s1.empty())
+                {
+                    node = s1.top();
+                    s1.pop();
+                    s2.push(node);
 
-                //     if (node->right && s.top() == node->right)
-                //     {
-                //         s.pop();
-                //         s.push(node);
-                //         node = node->right;
-                //     }
-                //     else
-                //     {
-                //         it.push(node);
-                //         node = nullptr;
-                //     }
-                // } while (!s.empty());
+                    if (node->left)
+                        s1.push(node->left);
+                    if (node->right)
+                        s1.push(node->right);
+                }
+
+                while (!s2.empty())
+                {
+
+                    node = s2.top();
+                    it.push(node);
+                    s2.pop();
+                }
+
                 it.push(nullptr);
-                current_node=it.front();
+                current_node = it.front();
                 it.pop();
             }
 
@@ -232,17 +227,52 @@ namespace ariel
         }
 
         iteratorTree begin_preorder() const { return iteratorTree(root, PREORDER); }
-        iteratorTree end_preorder() const { return iteratorTree(); }
+        iteratorTree end_preorder() const
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("can't create an iterator on a empty tree");
+            }
+            return iteratorTree();
+        }
         iteratorTree begin_inorder() const { return iteratorTree(root, INORDER); }
-        iteratorTree end_inorder() const { return iteratorTree(); }
+        iteratorTree end_inorder() const
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("can't create an iterator on a empty tree");
+            }
+            return iteratorTree();
+        }
         iteratorTree begin_postorder() const { return iteratorTree(root, POSTORDER); }
-        iteratorTree end_postorder() const { return iteratorTree(); }
+        iteratorTree end_postorder() const
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("can't create an iterator on a empty tree");
+            }
+            return iteratorTree();
+        }
         iteratorTree begin() const { return begin_inorder(); }
-        iteratorTree end() const { return iteratorTree(); }
+        iteratorTree end() const
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("can't create an iterator on a empty tree");
+            }
+            return iteratorTree();
+        }
 
         BinaryTree &add_root(T t)
         {
-            root = new Node{t};
+            if (root)
+            {
+                root = new Node{t, root->left, root->right};
+            }
+            else
+            {
+                root = new Node{t};
+            }
             return *this;
         }
 
