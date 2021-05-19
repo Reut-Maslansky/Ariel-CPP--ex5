@@ -51,7 +51,6 @@ namespace ariel
 
             void init_queue_inorder()
             {
-                cout << "init in" << endl;
                 if (current_node == nullptr)
                 {
                     return;
@@ -73,11 +72,13 @@ namespace ariel
 
                     curr = curr->right;
                 }
+
                 it.push(nullptr);
+                current_node=it.front();
+                it.pop();
             }
             void init_queue_preorder()
             {
-                cout << "init pre" << endl;
                 if (current_node == nullptr)
                 {
                     return;
@@ -96,13 +97,13 @@ namespace ariel
                     if (node->left)
                         s.push(node->left);
                 }
+
                 it.push(nullptr);
-                // cout<<"end init"<<endl;
+                current_node=it.front();
+                it.pop();
             }
             void init_queue_postorder()
             {
-                cout << "init post" << endl;
-
                 // if (current_node == nullptr)
                 // {
                 //     return;
@@ -139,6 +140,8 @@ namespace ariel
                 //     }
                 // } while (!s.empty());
                 it.push(nullptr);
+                current_node=it.front();
+                it.pop();
             }
 
         public:
@@ -169,9 +172,7 @@ namespace ariel
             {
                 if (!it.empty())
                 {
-                    // cout<<"++"<<endl;
                     current_node = it.front();
-                    // cout<<"it.front() "<<current_node->value<<endl;
                     it.pop();
                 }
                 return *this;
