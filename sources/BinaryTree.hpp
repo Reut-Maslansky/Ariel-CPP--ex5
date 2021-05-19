@@ -189,7 +189,9 @@ namespace ariel
             }
 
         public:
-            iteratorTree(Node *ptr = nullptr, int t = -1) : current_node(ptr)
+            iteratorTree(Node *ptr = nullptr) : current_node(ptr) {}
+
+            iteratorTree(Node *ptr, int t) : current_node(ptr)
             {
                 if (t == INORDER)
                 {
@@ -244,12 +246,12 @@ namespace ariel
         /***************END OF CLASS ITERATOR***************/
 
         iteratorTree begin_preorder() const { return iteratorTree(root, PREORDER); }
-        iteratorTree end_preorder() const { return iteratorTree(root, PREORDER); }
+        iteratorTree end_preorder() const { return iteratorTree(); }
         iteratorTree begin_inorder() const { return iteratorTree(root, INORDER); }
-        iteratorTree end_inorder() const { return iteratorTree(root, INORDER); }
+        iteratorTree end_inorder() const { return iteratorTree(); }
         iteratorTree begin_postorder() const { return iteratorTree(root, POSTORDER); }
-        iteratorTree end_postorder() const { return iteratorTree(root, POSTORDER); }
+        iteratorTree end_postorder() const { return iteratorTree(); }
         iteratorTree begin() const { return begin_inorder(); }
-        iteratorTree end() const { return end_inorder(); }
+        iteratorTree end() const { return iteratorTree(); }
     };
 }
