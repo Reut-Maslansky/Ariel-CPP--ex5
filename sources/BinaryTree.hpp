@@ -18,17 +18,20 @@ namespace ariel
         struct Node
         {
             T value;
-            // Node *parent;
             Node *left;
             Node *right;
-            // Node(const T &v, Node *parent) : value(v), parent(parent), left(nullptr), right(nullptr) {}
             Node(const T &v) : value(v), left(nullptr), right(nullptr) {}
+            Node(const T &v, Node *l, Node *r) : value(v), left(l), right(r) {}
 
             ~Node()
             {
                 delete left;
                 delete right;
-                // delete parent;
+            }
+            Node &operator=(const Node &other)
+            {
+                other.swap(*this);
+                return *this;
             }
         };
 
@@ -37,40 +40,173 @@ namespace ariel
         // BinaryTree &operator=(const BinaryTree &copy) {}
 
     public:
+        /***************CLASS ITERATOR***************/
+
+        class iteratorTree
+        {
+
+        private:
+            Node *current_node;
+            queue<Node *> it;
+
+            void init_queue_inorder()
+            {
+                cout << "init in" << endl;
+                if (current_node == nullptr)
+                {
+                    return;
+                }
+                stack<Node *> s;
+                Node *curr = current_node;
+
+                while (curr != nullptr || s.empty() == false)
+                {
+                    while (curr != nullptr)
+                    {
+                        s.push(curr);
+                        curr = curr->left;
+                    }
+
+                    curr = s.top();
+                    it.push(curr);
+                    s.pop();
+
+                    curr = curr->right;
+                }
+                it.push(nullptr);
+            }
+            void init_queue_preorder()
+            {
+                cout << "init pre" << endl;
+                if (current_node == nullptr)
+                {
+                    return;
+                }
+                stack<Node *> s;
+                s.push(current_node);
+
+                while (s.empty() == false)
+                {
+                    Node *node = s.top();
+                    it.push(node);
+                    s.pop();
+
+                    if (node->right)
+                        s.push(node->right);
+                    if (node->left)
+                        s.push(node->left);
+                }
+                it.push(nullptr);
+                // cout<<"end init"<<endl;
+            }
+            void init_queue_postorder()
+            {
+                cout << "init post" << endl;
+
+                // if (current_node == nullptr)
+                // {
+                //     return;
+                // }
+                // stack<Node *> s;
+                // Node *node = current_node;
+
+                // do
+                // {
+                //     while (node)
+                //     {
+                //         if (node->right)
+                //         {
+                //             s.push(node->right);
+                //         }
+                //         s.push(node);
+
+                //         node = node->left;
+                //     }
+
+                //     node = s.top();
+                //     s.pop();
+
+                //     if (node->right && s.top() == node->right)
+                //     {
+                //         s.pop();
+                //         s.push(node);
+                //         node = node->right;
+                //     }
+                //     else
+                //     {
+                //         it.push(node);
+                //         node = nullptr;
+                //     }
+                // } while (!s.empty());
+                it.push(nullptr);
+            }
+
+        public:
+            iteratorTree(Node *ptr = nullptr) : current_node(ptr) {}
+
+            iteratorTree(Node *ptr, int t) : current_node(ptr)
+            {
+                if (t == INORDER)
+                {
+                    init_queue_inorder();
+                }
+                if (t == PREORDER)
+                {
+                    init_queue_preorder();
+                }
+                if (t == POSTORDER)
+                {
+                    init_queue_postorder();
+                }
+            }
+
+            const T &operator*() const { return current_node->value; }
+
+            const T *operator->() const { return &(current_node->value); }
+
+            // ++i;
+            iteratorTree &operator++()
+            {
+                if (!it.empty())
+                {
+                    // cout<<"++"<<endl;
+                    current_node = it.front();
+                    // cout<<"it.front() "<<current_node->value<<endl;
+                    it.pop();
+                }
+                return *this;
+            }
+
+            // i++;
+            const iteratorTree operator++(int)
+            {
+                iteratorTree tmp = *this;
+                current_node = it.front();
+                it.pop();
+                return tmp;
+            }
+
+            bool operator==(const iteratorTree &other) const { return current_node == other.current_node; }
+
+            bool operator!=(const iteratorTree &other) const { return current_node != other.current_node; }
+
+            Node *get_node() { return current_node; }
+        };
+        /***************END OF CLASS ITERATOR***************/
+
         BinaryTree() : root(nullptr) {}
         ~BinaryTree()
         {
             delete root;
         }
 
-        BinaryTree &add_root(T t)
-        {
-            // root = new Node{t, nullptr};
-            root = new Node{t};
-            return *this;
-        }
-
-        BinaryTree &add_left(T p, T v)
-        {
-            // root = new Node{v, nullptr};
-            root = new Node{v};
-            return *this;
-        }
-
-        BinaryTree &add_right(T p, T v)
-        {
-            // root = new Node{v, nullptr};
-            root = new Node{v};
-            return *this;
-        }
-
         void printBT(const string &prefix, const Node *node, bool isLeft) const
         {
             if (node != nullptr)
             {
-                std::cout << prefix;
+                cout << prefix;
 
-                std::cout << (isLeft ? "├──" : "└──");
+                cout << (isLeft ? "├──" : "└──");
 
                 // print the value of the node
                 cout << node->value << endl;
@@ -94,157 +230,6 @@ namespace ariel
             return os;
         }
 
-        /***************CLASS ITERATOR***************/
-
-        class iteratorTree
-        {
-
-        private:
-            Node *current_node;
-            queue<Node *> in;
-            queue<Node *> pre;
-            queue<Node *> post;
-            void init_queue_inorder()
-            {
-                if (current_node == nullptr)
-                {
-                    return;
-                }
-                stack<Node *> s;
-                Node *curr = current_node;
-
-                while (curr != nullptr || s.empty() == false)
-                {
-                    while (curr != nullptr)
-                    {
-                        s.push(curr);
-                        curr = curr->left;
-                    }
-
-                    curr = s.top();
-                    in.push(curr);
-                    s.pop();
-
-                    curr = curr->right;
-                }
-            }
-            void init_queue_preorder()
-            {
-                if (current_node == nullptr)
-                {
-                    return;
-                }
-                stack<Node *> s;
-                s.push(current_node);
-
-                while (s.empty() == false)
-                {
-                    Node *node = s.top();
-                    pre.push(node);
-                    s.pop();
-
-                    if (node->right)
-                        s.push(node->right);
-                    if (node->left)
-                        s.push(node->left);
-                }
-            }
-            void init_queue_postorder()
-            {
-                if (current_node == nullptr)
-                {
-                    return;
-                }
-                stack<Node *> s;
-                Node *node = current_node;
-
-                do
-                {
-                    while (node)
-                    {
-                        if (node->right)
-                        {
-                            s.push(node->right);
-                        }
-                        s.push(node);
-
-                        node = node->left;
-                    }
-
-                    node = s.top();
-                    s.pop();
-
-                    if (node->right && s.top() == node->right)
-                    {
-                        s.pop();
-                        s.push(node);
-                        node = node->right;
-                    }
-                    else
-                    {
-                        post.push(node);
-                        node = nullptr;
-                    }
-                } while (!s.empty());
-            }
-
-        public:
-            iteratorTree(Node *ptr = nullptr) : current_node(ptr) {}
-
-            iteratorTree(Node *ptr, int t) : current_node(ptr)
-            {
-                if (t == INORDER)
-                {
-                    init_queue_inorder();
-                }
-                if (t == PREORDER)
-                {
-                    init_queue_preorder();
-                }
-                if (t == POSTORDER)
-                {
-                    init_queue_postorder();
-                }
-            }
-
-            const T &operator*() const
-            {
-                return current_node->value;
-            }
-
-            const T *operator->() const { return &(current_node->value); }
-
-            // ++i;
-            iteratorTree &operator++()
-            {
-                //++pointer_to_current_node;
-                if (current_node->right)
-                    current_node = current_node->right;
-                else
-                    current_node = nullptr;
-                return *this;
-            }
-
-            // i++;
-            const iteratorTree operator++(int)
-            {
-                iteratorTree tmp = *this;
-                current_node = current_node->right;
-                return tmp;
-            }
-
-            bool operator==(const iteratorTree &other) const
-            {
-                return current_node == other.current_node;
-            }
-
-            bool operator!=(const iteratorTree &other) const
-            {
-                return current_node != other.current_node;
-            }
-        };
-        /***************END OF CLASS ITERATOR***************/
-
         iteratorTree begin_preorder() const { return iteratorTree(root, PREORDER); }
         iteratorTree end_preorder() const { return iteratorTree(); }
         iteratorTree begin_inorder() const { return iteratorTree(root, INORDER); }
@@ -253,5 +238,72 @@ namespace ariel
         iteratorTree end_postorder() const { return iteratorTree(); }
         iteratorTree begin() const { return begin_inorder(); }
         iteratorTree end() const { return iteratorTree(); }
+
+        BinaryTree &add_root(T t)
+        {
+            root = new Node{t};
+            return *this;
+        }
+
+        BinaryTree &add_left(T p, T v)
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("There is no root in this tree");
+            }
+            Node *curr = nullptr;
+            for (auto i = begin_inorder(); i != end_inorder(); ++i)
+            {
+                if (*i == p)
+                {
+                    curr = i.get_node();
+                    break;
+                }
+            }
+            if (curr == nullptr)
+            {
+                throw invalid_argument("This node is not in the tree");
+            }
+
+            if (curr->left)
+            {
+                curr->left = new Node{v, curr->left->left, curr->left->right};
+            }
+            else
+            {
+                curr->left = new Node{v};
+            }
+            return *this;
+        }
+
+        BinaryTree &add_right(T p, T v)
+        {
+            if (root == nullptr)
+            {
+                throw invalid_argument("There is no root in this tree");
+            }
+            Node *curr = nullptr;
+            for (auto i = begin_inorder(); i != end_inorder(); ++i)
+            {
+                if (*i == p)
+                {
+                    curr = i.get_node();
+                    break;
+                }
+            }
+            if (curr == nullptr)
+            {
+                throw invalid_argument("This node is not in the tree");
+            }
+            if (curr->right)
+            {
+                curr->right = new Node{v, curr->right->left, curr->right->right};
+            }
+            else
+            {
+                curr->right = new Node{v};
+            }
+            return *this;
+        }
     };
 }
