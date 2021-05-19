@@ -1,5 +1,6 @@
 #include "doctest.h"
 #include "BinaryTree.hpp"
+#include <iostream>
 
 using namespace ariel;
 using namespace std;
@@ -26,42 +27,107 @@ TEST_CASE("int")
     SUBCASE("add root")
     {
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i <= 10; i++)
         {
             CHECK_NOTHROW(tree_of_ints.add_root(i));
             CHECK(*(tree_of_ints.begin_inorder()) == i);
             CHECK(*(tree_of_ints.begin_postorder()) == i);
             CHECK(*(tree_of_ints.begin_preorder()) == i);
-            CHECK(*(tree_of_ints.end_inorder()) == i);
-            CHECK(*(tree_of_ints.end_postorder()) == i);
-            CHECK(*(tree_of_ints.end_preorder()) == i);
         }
     }
     SUBCASE("add left")
     {
-        //now, there is one node in the tree- 19.
+        //now, there is one node in the tree- 10.
         CHECK_THROWS(tree_of_ints.add_left((rand() % 10), (rand() % 10)));
 
         for (int i = 0; i < 10; i++)
         {
-            CHECK_NOTHROW(tree_of_ints.add_left(19, i));
+            CHECK_NOTHROW(tree_of_ints.add_left(10, i));
             CHECK(*(tree_of_ints.begin_inorder()) == i);
             CHECK(*(tree_of_ints.begin_postorder()) == i);
-            CHECK(*(tree_of_ints.begin_preorder()) == 19);
-            CHECK(*(tree_of_ints.end_inorder()) == 19);
-            CHECK(*(tree_of_ints.end_postorder()) == 19);
-            CHECK(*(tree_of_ints.end_preorder()) == i);
+            CHECK(*(tree_of_ints.begin_preorder()) == 10);
         }
 
-        /*
+        CHECK_NOTHROW(tree_of_ints.add_left(9, 8));
 
-            └──19
-               |──9
+        for (int i = 8; i > 0; i--)
+        {
+            CHECK_NOTHROW(tree_of_ints.add_left(i, i - 1));
+        }
 
-        */
+        //└──10
+        //   ├──9
+        //      ├──8
+        //         ├──7
+        //            ├──6
+        //               ├──5
+        //                  ├──4
+        //                     ├──3
+        //                        ├──2
+        //                           ├──1
 
-        for(int i=0; i<10; i++){
+        int count = 0;
+        for (auto it = tree_of_ints.begin_inorder(); it != tree_of_ints.end_inorder(); ++it)
+        {
+            CHECK(*it == count++);
+        }
+        for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
+        {
+            CHECK(*it == count--);
+        }
+        for (auto it = tree_of_ints.begin_postorder(); it != tree_of_ints.end_postorder(); ++it)
+        {
+            CHECK(*it == count++);
+        }
+    }
 
+    SUBCASE("add right")
+    {
+        BinaryTree<int> tree_of_ints1;
+        CHECK_NOTHROW(tree_of_ints1.add_root(10));
+
+        //now, there is 10 node in the tree- 10.
+        CHECK_THROWS(tree_of_ints1.add_right((rand() % 10), (rand() % 10)));
+
+        for (int i = 0; i < 10; i++)
+        {
+            CHECK_NOTHROW(tree_of_ints1.add_right(10, i));
+            CHECK(*(tree_of_ints1.begin_inorder()) == 10);
+            CHECK(*(tree_of_ints1.begin_postorder()) == i);
+            CHECK(*(tree_of_ints1.begin_preorder()) == 10);
+        }
+
+        CHECK_NOTHROW(tree_of_ints1.add_right(9, 8));
+
+        for (int i = 8; i > 0; i--)
+        {
+            CHECK_NOTHROW(tree_of_ints1.add_right(i, i - 1));
+        }
+
+        //                           ├──1
+        //                        ├──2
+        //                     ├──3
+        //                  ├──4
+        //               ├──5
+        //            ├──6
+        //         ├──7
+        //      ├──8
+        //   ├──9
+        //└──10
+
+
+        int count = 0;
+        for (auto it = tree_of_ints1.begin_inorder(); it != tree_of_ints1.end_inorder(); ++it)
+        {
+            CHECK(*it == count++);
+        }
+        for (auto it = tree_of_ints1.begin_preorder(); it != tree_of_ints1.end_preorder(); ++it)
+        {
+            CHECK(*it == count--);
+        }
+        for (auto it = tree_of_ints1.begin_postorder(); it != tree_of_ints1.end_postorder(); ++it)
+        {
+            CHECK(*it == count++);
         }
     }
 }
