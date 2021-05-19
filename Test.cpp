@@ -37,7 +37,9 @@ TEST_CASE("int")
     }
     SUBCASE("add left")
     {
-        //now, there is one node in the tree- 10.
+        CHECK_NOTHROW(tree_of_ints.add_root(10));
+
+        //There is one node in the tree- 10.
         CHECK_THROWS(tree_of_ints.add_left((rand() % 10), (rand() % 10)));
 
         for (int i = 0; i < 10; i++)
@@ -73,7 +75,7 @@ TEST_CASE("int")
         }
         for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
         {
-            CHECK(*it == count--);
+            CHECK(*it == --count);
         }
         for (auto it = tree_of_ints.begin_postorder(); it != tree_of_ints.end_postorder(); ++it)
         {
@@ -83,25 +85,25 @@ TEST_CASE("int")
 
     SUBCASE("add right")
     {
-        BinaryTree<int> tree_of_ints1;
-        CHECK_NOTHROW(tree_of_ints1.add_root(10));
+        BinaryTree<int> tree_of_ints;
+        CHECK_NOTHROW(tree_of_ints.add_root(10));
 
         //now, there is 10 node in the tree- 10.
-        CHECK_THROWS(tree_of_ints1.add_right((rand() % 10), (rand() % 10)));
+        CHECK_THROWS(tree_of_ints.add_right((rand() % 10), (rand() % 10)));
 
         for (int i = 0; i < 10; i++)
         {
-            CHECK_NOTHROW(tree_of_ints1.add_right(10, i));
-            CHECK(*(tree_of_ints1.begin_inorder()) == 10);
-            CHECK(*(tree_of_ints1.begin_postorder()) == i);
-            CHECK(*(tree_of_ints1.begin_preorder()) == 10);
+            CHECK_NOTHROW(tree_of_ints.add_right(10, i));
+            CHECK(*(tree_of_ints.begin_inorder()) == 10);
+            CHECK(*(tree_of_ints.begin_postorder()) == i);
+            CHECK(*(tree_of_ints.begin_preorder()) == 10);
         }
 
-        CHECK_NOTHROW(tree_of_ints1.add_right(9, 8));
+        CHECK_NOTHROW(tree_of_ints.add_right(9, 8));
 
         for (int i = 8; i > 0; i--)
         {
-            CHECK_NOTHROW(tree_of_ints1.add_right(i, i - 1));
+            CHECK_NOTHROW(tree_of_ints.add_right(i, i - 1));
         }
 
         //                           ├──1
@@ -115,19 +117,19 @@ TEST_CASE("int")
         //   ├──9
         //└──10
 
-
-        int count = 0;
-        for (auto it = tree_of_ints1.begin_inorder(); it != tree_of_ints1.end_inorder(); ++it)
-        {
-            CHECK(*it == count++);
-        }
-        for (auto it = tree_of_ints1.begin_preorder(); it != tree_of_ints1.end_preorder(); ++it)
+        int count = 10;
+        for (auto it = tree_of_ints.begin_inorder(); it != tree_of_ints.end_inorder(); ++it)
         {
             CHECK(*it == count--);
         }
-        for (auto it = tree_of_ints1.begin_postorder(); it != tree_of_ints1.end_postorder(); ++it)
+        count = 10;
+        for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
         {
-            CHECK(*it == count++);
+            CHECK(*it == count--);
+        }
+        for (auto it = tree_of_ints.begin_postorder(); it != tree_of_ints.end_postorder(); ++it)
+        {
+            CHECK(*it == ++count);
         }
     }
 }
