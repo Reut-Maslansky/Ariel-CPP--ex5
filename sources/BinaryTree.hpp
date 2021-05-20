@@ -36,8 +36,6 @@ namespace ariel
         };
 
         Node *root;
-        // BinaryTree(const BinaryTree &copy) {}
-        // BinaryTree &operator=(const BinaryTree &copy) {}
 
     public:
         /***************CLASS ITERATOR***************/
@@ -53,8 +51,9 @@ namespace ariel
             {
                 if (current_node == nullptr)
                 {
-                    throw invalid_argument("can't create an iterator on a empty tree");
+                    return;
                 }
+
                 stack<Node *> s;
                 Node *curr = current_node;
 
@@ -81,7 +80,7 @@ namespace ariel
             {
                 if (current_node == nullptr)
                 {
-                    throw invalid_argument("can't create an iterator on a empty tree");
+                    return;
                 }
                 stack<Node *> s;
                 s.push(current_node);
@@ -106,7 +105,7 @@ namespace ariel
             {
                 if (current_node == nullptr)
                 {
-                    throw invalid_argument("can't create an iterator on a empty tree");
+                    return;
                 }
 
                 stack<Node *> s1, s2;
@@ -222,48 +221,21 @@ namespace ariel
         {
 
             os << "\033[35m"
-               << "\nBinary Tree:\n" << endl;
+               << "\nBinary Tree:\n"
+               << endl;
             b.printBT(b.root);
             os << "\033[0m";
             return os;
         }
 
         iteratorTree begin_preorder() const { return iteratorTree(root, PREORDER); }
-        iteratorTree end_preorder() const
-        {
-            if (root == nullptr)
-            {
-                throw invalid_argument("can't create an iterator on a empty tree");
-            }
-            return iteratorTree();
-        }
+        iteratorTree end_preorder() const { return iteratorTree(); }
         iteratorTree begin_inorder() const { return iteratorTree(root, INORDER); }
-        iteratorTree end_inorder() const
-        {
-            if (root == nullptr)
-            {
-                throw invalid_argument("can't create an iterator on a empty tree");
-            }
-            return iteratorTree();
-        }
+        iteratorTree end_inorder() const { return iteratorTree(); }
         iteratorTree begin_postorder() const { return iteratorTree(root, POSTORDER); }
-        iteratorTree end_postorder() const
-        {
-            if (root == nullptr)
-            {
-                throw invalid_argument("can't create an iterator on a empty tree");
-            }
-            return iteratorTree();
-        }
+        iteratorTree end_postorder() const { return iteratorTree(); }
         iteratorTree begin() const { return begin_inorder(); }
-        iteratorTree end() const
-        {
-            if (root == nullptr)
-            {
-                throw invalid_argument("can't create an iterator on a empty tree");
-            }
-            return iteratorTree();
-        }
+        iteratorTree end() const { return iteratorTree(); }
 
         BinaryTree &add_root(T t)
         {

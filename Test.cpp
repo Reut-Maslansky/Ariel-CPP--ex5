@@ -11,14 +11,10 @@ TEST_CASE("int")
     BinaryTree<int> tree_of_ints;
     SUBCASE("before add root")
     {
-
-        //can't make an iterator before add root- there is no root.
-        CHECK_THROWS(tree_of_ints.begin_inorder());
-        CHECK_THROWS(tree_of_ints.begin_postorder());
-        CHECK_THROWS(tree_of_ints.begin_preorder());
-        CHECK_THROWS(tree_of_ints.end_inorder());
-        CHECK_THROWS(tree_of_ints.end_postorder());
-        CHECK_THROWS(tree_of_ints.end_preorder());
+        //make an iterator before add root.
+        CHECK(tree_of_ints.begin_inorder() == tree_of_ints.end_inorder());
+        CHECK(tree_of_ints.begin_postorder() == tree_of_ints.end_postorder());
+        CHECK(tree_of_ints.begin_preorder() == tree_of_ints.end_preorder());
 
         //can't add left/right child before add root.
         CHECK_THROWS(tree_of_ints.add_left((rand() % 10), (rand() % 10)));
@@ -197,14 +193,10 @@ TEST_CASE("string")
 
     SUBCASE("before add root")
     {
-
-        //can't make an iterator before add root- there is no root.
-        CHECK_THROWS(tree_of_strings.begin_inorder());
-        CHECK_THROWS(tree_of_strings.begin_postorder());
-        CHECK_THROWS(tree_of_strings.begin_preorder());
-        CHECK_THROWS(tree_of_strings.end_inorder());
-        CHECK_THROWS(tree_of_strings.end_postorder());
-        CHECK_THROWS(tree_of_strings.end_preorder());
+        //make an iterator before add root.
+        CHECK(tree_of_strings.begin_inorder() == tree_of_strings.end_inorder());
+        CHECK(tree_of_strings.begin_postorder() == tree_of_strings.end_postorder());
+        CHECK(tree_of_strings.begin_preorder() == tree_of_strings.end_preorder());
 
         //can't add left/right child before add root.
         CHECK_THROWS(tree_of_strings.add_left(to_string((rand() % 10)), to_string((rand() % 10))));
@@ -397,13 +389,10 @@ TEST_CASE("new object - person")
 
     SUBCASE("before add root")
     {
-        //can't make an iterator before add root- there is no root.
-        CHECK_THROWS(tree_of_persons.begin_inorder());
-        CHECK_THROWS(tree_of_persons.begin_postorder());
-        CHECK_THROWS(tree_of_persons.begin_preorder());
-        CHECK_THROWS(tree_of_persons.end_inorder());
-        CHECK_THROWS(tree_of_persons.end_postorder());
-        CHECK_THROWS(tree_of_persons.end_preorder());
+        //make an iterator before add root.
+        CHECK(tree_of_persons.begin_inorder() == tree_of_persons.end_inorder());
+        CHECK(tree_of_persons.begin_postorder() == tree_of_persons.end_postorder());
+        CHECK(tree_of_persons.begin_preorder() == tree_of_persons.end_preorder());
     }
     SUBCASE("add root")
     {
