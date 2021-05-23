@@ -65,15 +65,15 @@ TEST_CASE("int")
         //                           ├──1
 
         int count = 0;
-        for (auto it = tree_of_ints.begin_inorder(); it != tree_of_ints.end_inorder(); ++it)
+        for (auto it = tree_of_ints.begin_inorder(); it != tree_of_ints.end_inorder(); it++)
         {
             CHECK(*it == count++);
         }
-        for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
+        for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); it++)
         {
             CHECK(*it == --count);
         }
-        for (auto it = tree_of_ints.begin_postorder(); it != tree_of_ints.end_postorder(); ++it)
+        for (auto it = tree_of_ints.begin_postorder(); it != tree_of_ints.end_postorder(); it++)
         {
             CHECK(*it == count++);
         }
@@ -141,6 +141,9 @@ TEST_CASE("int")
         CHECK_NOTHROW(tree_of_ints.add_right(1, 7));
         CHECK_NOTHROW(tree_of_ints.add_right(7, 8));
         CHECK_NOTHROW(tree_of_ints.add_left(8, 9));
+
+        CHECK_NOTHROW(cout << tree_of_ints);
+
         int count = 1;
         for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
         {
@@ -314,6 +317,7 @@ TEST_CASE("string")
     SUBCASE("preorder")
     {
         BinaryTree<string> tree_of_strings;
+
         CHECK_NOTHROW(tree_of_strings.add_root("1"));
         CHECK_NOTHROW(tree_of_strings.add_left("1", "2"));
         CHECK_NOTHROW(tree_of_strings.add_left("2", "3"));
@@ -323,6 +327,9 @@ TEST_CASE("string")
         CHECK_NOTHROW(tree_of_strings.add_right("1", "7"));
         CHECK_NOTHROW(tree_of_strings.add_right("7", "8"));
         CHECK_NOTHROW(tree_of_strings.add_left("8", "9"));
+
+        CHECK_NOTHROW(cout << tree_of_strings);
+
         int count = 1;
         for (auto it = tree_of_strings.begin_preorder(); it != tree_of_strings.end_preorder(); ++it)
         {
@@ -380,6 +387,11 @@ public:
     bool operator==(Person &other) const
     {
         return age == other.age;
+    }
+
+    friend ostream &operator<<(ostream &os, const Person &b)
+    {
+        return os << b.age << endl;
     }
 };
 
@@ -516,6 +528,9 @@ TEST_CASE("new object - person")
         CHECK_NOTHROW(tree_of_persons.add_right(Person{1}, Person{7}));
         CHECK_NOTHROW(tree_of_persons.add_right(Person{7}, Person{8}));
         CHECK_NOTHROW(tree_of_persons.add_left(Person{8}, Person{9}));
+
+        CHECK_NOTHROW(cout <<tree_of_persons);
+
         int count = 1;
         for (auto it = tree_of_persons.begin_preorder(); it != tree_of_persons.end_preorder(); ++it)
         {
