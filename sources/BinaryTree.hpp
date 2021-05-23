@@ -22,16 +22,12 @@ namespace ariel
             Node *right;
             Node(const T &v) : value(v), left(nullptr), right(nullptr) {}
             Node(const T &v, Node *l, Node *r) : value(v), left(l), right(r) {}
+            Node(Node *copy) : value(copy->value), left(copy->left), right(copy->right) {}
 
             ~Node()
             {
                 delete left;
                 delete right;
-            }
-            Node &operator=(const Node &other)
-            {
-                other.swap(*this);
-                return *this;
             }
         };
 
@@ -241,7 +237,7 @@ namespace ariel
         {
             if (root)
             {
-                root = new Node{t, root->left, root->right};
+                root->value=t;
             }
             else
             {
@@ -272,7 +268,7 @@ namespace ariel
 
             if (curr->left)
             {
-                curr->left = new Node{v, curr->left->left, curr->left->right};
+                curr->left->value=v;
             }
             else
             {
@@ -302,7 +298,7 @@ namespace ariel
             }
             if (curr->right)
             {
-                curr->right = new Node{v, curr->right->left, curr->right->right};
+                curr->right->value=v;
             }
             else
             {
