@@ -14,15 +14,12 @@ namespace ariel
     class BinaryTree
     {
     private:
-        // inner class
         struct Node
         {
             T value;
             Node *left;
             Node *right;
             Node(const T &v) : value(v), left(nullptr), right(nullptr) {}
-            Node(const T &v, Node *l, Node *r) : value(v), left(l), right(r) {}
-            Node(Node *copy) : value(copy->value), left(copy->left), right(copy->right) {}
 
             ~Node()
             {
@@ -34,6 +31,7 @@ namespace ariel
         Node *root;
 
     public:
+
         /***************CLASS ITERATOR***************/
 
         class iteratorTree
@@ -72,6 +70,7 @@ namespace ariel
                 current_node = it.front();
                 it.pop();
             }
+
             void init_queue_preorder()
             {
                 if (current_node == nullptr)
@@ -183,6 +182,7 @@ namespace ariel
 
             Node *get_node() { return current_node; }
         };
+
         /***************END OF CLASS ITERATOR***************/
 
         BinaryTree() : root(nullptr) {}
@@ -195,27 +195,18 @@ namespace ariel
         {
             if (node != nullptr)
             {
-                cout << prefix;
-
-                cout << (isLeft ? "├──" : "└──");
-
-                // print the value of the node
+                cout << prefix << (isLeft ? "├──" : "└──");
                 cout << node->value << endl;
 
-                // enter the next tree level - left and right branch
                 printBT(prefix + (isLeft ? "│   " : "    "), node->left, true);
                 printBT(prefix + (isLeft ? "│   " : "    "), node->right, false);
             }
         }
 
-        void printBT(const Node *node) const
-        {
-            printBT("", node, false);
-        }
+        void printBT(const Node *node) const { printBT("", node, false); }
 
         friend ostream &operator<<(ostream &os, const BinaryTree &b)
         {
-
             os << "\033[35m"
                << "\nBinary Tree:\n"
                << endl;
@@ -237,7 +228,7 @@ namespace ariel
         {
             if (root)
             {
-                root->value=t;
+                root->value = t;
             }
             else
             {
@@ -268,7 +259,7 @@ namespace ariel
 
             if (curr->left)
             {
-                curr->left->value=v;
+                curr->left->value = v;
             }
             else
             {
@@ -298,7 +289,7 @@ namespace ariel
             }
             if (curr->right)
             {
-                curr->right->value=v;
+                curr->right->value = v;
             }
             else
             {
