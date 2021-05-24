@@ -275,11 +275,6 @@ TEST_CASE("string")
         {
             CHECK(elem == to_string(count++));
         }
-        count = 0;
-        for (string elem : tree_of_strings)
-        {
-            CHECK(elem == to_string(count++));
-        }
         for (auto it = tree_of_strings.begin_preorder(); it != tree_of_strings.end_preorder(); ++it)
         {
             CHECK(*it == to_string(--count));
@@ -338,11 +333,6 @@ TEST_CASE("string")
         for (string elem : tree_of_strings)
         {
             CHECK(elem == to_string(count--));
-        }
-        count = 10;
-        for (auto it = tree_of_strings.begin_preorder(); it != tree_of_strings.end_preorder(); ++it)
-        {
-            CHECK(*it == to_string(count--));
         }
         for (auto it = tree_of_strings.begin_postorder(); it != tree_of_strings.end_postorder(); ++it)
         {
