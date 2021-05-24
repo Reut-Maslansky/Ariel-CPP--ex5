@@ -69,6 +69,11 @@ TEST_CASE("int")
         {
             CHECK(*it == count++);
         }
+        count = 0;
+        for (int elem : tree_of_ints)
+        {
+            CHECK(elem == count++);
+        }
         for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); it++)
         {
             CHECK(*it == --count);
@@ -119,6 +124,11 @@ TEST_CASE("int")
             CHECK(*it == count--);
         }
         count = 10;
+        for (int elem : tree_of_ints)
+        {
+            CHECK(elem == count--);
+        }
+        count = 10;
         for (auto it = tree_of_ints.begin_preorder(); it != tree_of_ints.end_preorder(); ++it)
         {
             CHECK(*it == count--);
@@ -167,6 +177,12 @@ TEST_CASE("int")
         for (auto it = tree_of_ints.begin_inorder(); it != tree_of_ints.end_inorder(); ++it)
         {
             CHECK(*it == count++);
+        }
+        CHECK(count == 10);
+        count = 1;
+        for (int elem : tree_of_ints)
+        {
+            CHECK(elem == count++);
         }
         CHECK(count == 10);
     }
@@ -254,6 +270,16 @@ TEST_CASE("string")
         {
             CHECK(*it == to_string(count++));
         }
+        count=0;
+        for (string elem : tree_of_strings)
+        {
+            CHECK(elem == to_string(count++));
+        }
+        count = 0;
+        for (string elem : tree_of_strings)
+        {
+            CHECK(elem == to_string(count++));
+        }
         for (auto it = tree_of_strings.begin_preorder(); it != tree_of_strings.end_preorder(); ++it)
         {
             CHECK(*it == to_string(--count));
@@ -302,6 +328,16 @@ TEST_CASE("string")
         for (auto it = tree_of_strings.begin_inorder(); it != tree_of_strings.end_inorder(); ++it)
         {
             CHECK(*it == to_string(count--));
+        }
+        count=10;
+        for (string elem : tree_of_strings)
+        {
+            CHECK(elem == to_string(count--));
+        }
+        count = 10;
+        for (string elem : tree_of_strings)
+        {
+            CHECK(elem == to_string(count--));
         }
         count = 10;
         for (auto it = tree_of_strings.begin_preorder(); it != tree_of_strings.end_preorder(); ++it)
@@ -353,6 +389,11 @@ TEST_CASE("string")
         for (auto it = tree_of_strings.begin_inorder(); it != tree_of_strings.end_inorder(); ++it)
         {
             CHECK(*it == to_string(count++));
+        }
+        count=1;
+        for (string elem : tree_of_strings)
+        {
+            CHECK(elem == to_string(count++));
         }
         CHECK(count == 10);
     }
@@ -455,6 +496,11 @@ TEST_CASE("new object - person")
         {
             CHECK((*it).get_age() == count++);
         }
+        count=0;
+        for (Person elem : tree_of_persons)
+        {
+            CHECK(elem.get_age() == count++);
+        }
         for (auto it = tree_of_persons.begin_preorder(); it != tree_of_persons.end_preorder(); ++it)
         {
             CHECK((*it).get_age() == --count);
@@ -505,6 +551,11 @@ TEST_CASE("new object - person")
         {
             CHECK((*it).get_age() == count--);
         }
+        count=10;
+        for (Person elem : tree_of_persons)
+        {
+            CHECK(elem.get_age() == count--);
+        }
         count = 10;
         for (auto it = tree_of_persons.begin_preorder(); it != tree_of_persons.end_preorder(); ++it)
         {
@@ -529,7 +580,7 @@ TEST_CASE("new object - person")
         CHECK_NOTHROW(tree_of_persons.add_right(Person{7}, Person{8}));
         CHECK_NOTHROW(tree_of_persons.add_left(Person{8}, Person{9}));
 
-        CHECK_NOTHROW(cout <<tree_of_persons);
+        CHECK_NOTHROW(cout << tree_of_persons);
 
         int count = 1;
         for (auto it = tree_of_persons.begin_preorder(); it != tree_of_persons.end_preorder(); ++it)
@@ -556,6 +607,11 @@ TEST_CASE("new object - person")
         for (auto it = tree_of_persons.begin_inorder(); it != tree_of_persons.end_inorder(); ++it)
         {
             CHECK((*it).get_age() == count++);
+        }
+        count=1;
+        for (Person elem : tree_of_persons)
+        {
+            CHECK(elem.get_age() == count++);
         }
         CHECK(count == 10);
     }
