@@ -31,7 +31,6 @@ namespace ariel
         Node *root;
 
     public:
-
         /***************CLASS ITERATOR***************/
 
         class iteratorTree
@@ -87,9 +86,13 @@ namespace ariel
                     s.pop();
 
                     if (node->right)
+                    {
                         s.push(node->right);
+                    }
                     if (node->left)
+                    {
                         s.push(node->left);
+                    }
                 }
 
                 it.push(nullptr);
@@ -103,10 +106,11 @@ namespace ariel
                     return;
                 }
 
-                stack<Node *> s1, s2;
+                stack<Node *> s1;
+                stack<Node *> s2;
 
                 s1.push(current_node);
-                Node *node;
+                Node *node = nullptr;
 
                 while (!s1.empty())
                 {
@@ -115,9 +119,13 @@ namespace ariel
                     s2.push(node);
 
                     if (node->left)
+                    {
                         s1.push(node->left);
+                    }
                     if (node->right)
+                    {
                         s1.push(node->right);
+                    }
                 }
 
                 while (!s2.empty())
@@ -168,7 +176,7 @@ namespace ariel
             }
 
             // i++;
-            const iteratorTree operator++(int)
+            iteratorTree operator++(int)
             {
                 iteratorTree tmp = *this;
                 current_node = it.front();
@@ -195,7 +203,14 @@ namespace ariel
         {
             if (node != nullptr)
             {
-                cout << prefix << (isLeft ? "├──" : "└──");
+                if (isLeft)
+                {
+                    cout << prefix << "├──";
+                }
+                else
+                {
+                    cout << prefix << "└──";
+                }
                 cout << node->value << endl;
 
                 printBT(prefix + (isLeft ? "│   " : "    "), node->left, true);
